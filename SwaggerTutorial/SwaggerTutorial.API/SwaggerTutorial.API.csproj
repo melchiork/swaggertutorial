@@ -9,7 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Docs\intro.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Docs\intro.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <PropertyGroup>

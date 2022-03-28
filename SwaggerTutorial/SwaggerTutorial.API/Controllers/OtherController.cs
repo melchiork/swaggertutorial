@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace SwaggerTutorial.API.Controllers
 {
@@ -36,6 +37,7 @@ namespace SwaggerTutorial.API.Controllers
 
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
+        [SwaggerRequestExample(typeof(RequestDto), typeof(RequestDtoExample))]
         public IActionResult Put([FromBody] RequestDto requestDto)
         {
             return null;

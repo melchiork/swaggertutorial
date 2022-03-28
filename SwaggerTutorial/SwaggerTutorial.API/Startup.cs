@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace SwaggerTutorial.API
 {
@@ -30,6 +31,8 @@ namespace SwaggerTutorial.API
         {
             services.AddControllers();
 
+            services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
+
             services.AddSwaggerGen(
                 options =>
                 {
@@ -37,7 +40,6 @@ namespace SwaggerTutorial.API
                     {
                         Version = "v1",
                         Title = "My tutorial App",
-                        Description = "For swagger learning",
                         TermsOfService = new Uri("https://example.com/terms"),
                         Contact = new OpenApiContact
                         {
@@ -53,6 +55,13 @@ namespace SwaggerTutorial.API
 
                     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+                    options.OperationFilter<AddHeaderOperationFilter>("correlationId", "Correlation Id for the request",
+                        false);
+
+                    options.ExampleFilters();
+
+                    options.DocumentFilter<DescriptionFilter>();
                 }
                 
                 );
@@ -65,10 +74,17 @@ namespace SwaggerTutorial.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
+               
                 app.UseSwaggerUI(x =>
                 {
                     x.DocumentTitle = "My tutorial App";
                     x.HeadContent = "For swagger learning";
+                });
+
+                app.UseReDoc(c =>
+                {
+                    c.DocumentTitle = "REDOC API Documentation for Tutorial app";
+                    c.SpecUrl = "/swagger/v1/swagger.json";
                 });
             }
 
